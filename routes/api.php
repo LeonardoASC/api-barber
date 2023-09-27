@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::resource('agendamento', App\Http\Controllers\AgendamentoController::class);
+Route::apiResource('agendamento', App\Http\Controllers\AgendamentoController::class);
 
 
 Route::post('register', [App\Http\Controllers\AuthController::class, 'register']);
 Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
-Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
-Route::post('user', [App\Http\Controllers\AuthController::class, 'getAuthUser']);
+Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout']);
+Route::get('user', [App\Http\Controllers\AuthController::class, 'getAuthUser']);
 
 
 
