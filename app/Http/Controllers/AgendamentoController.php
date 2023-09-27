@@ -30,7 +30,12 @@ class AgendamentoController extends Controller
      */
     public function store(Request $request)
     {
-        Agendamento::create($request->all());
+        $data = Agendamento::create($request->all());
+        return response()->json([
+            "success" => true,
+            "data" => $data,
+            "msg" => "sucesso"
+        ], 200);
     }
 
     /**
