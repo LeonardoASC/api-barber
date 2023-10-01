@@ -38,6 +38,7 @@ class AgendamentoController extends Controller
         ], 200);
     }
 
+
     /**
      * Display the specified resource.
      */
@@ -70,5 +71,17 @@ class AgendamentoController extends Controller
     {
         $agendamento = Agendamento::findOrFail($id);
         $agendamento->delete();
+    }
+
+    public function verificarAgendamento(Request $request)
+    {
+        $dia = $request->input('dia');
+        $horario = $request->input('horario');
+
+        $exists = Agendamento::where('dia', $dia)
+            ->where('horario', $horario)
+            ->exists();
+
+        return response()->json(['exists' => $exists]);
     }
 }
