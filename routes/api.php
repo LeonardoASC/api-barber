@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::apiResource('agendamento', App\Http\Controllers\AgendamentoController::class);
+Route::apiResource('horario', App\Http\Controllers\HorarioController::class);
+
 Route::get('/verify', [App\Http\Controllers\AgendamentoController::class, 'verificarAgendamento'])->name('agendamento.verificarAgendamento');
 
 
