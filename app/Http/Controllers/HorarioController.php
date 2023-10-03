@@ -6,6 +6,7 @@ use App\Models\Horario;
 use App\Http\Requests\StoreHorarioRequest;
 use App\Http\Requests\UpdateHorarioRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -18,7 +19,8 @@ class HorarioController extends Controller
      */
     public function index()
     {
-        return Horario::all();
+        // return Horario::all();
+        return Horario::orderBy('hora', 'asc')->get();
     }
 
     /**
@@ -32,10 +34,29 @@ class HorarioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreHorarioRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        $regras = [
+            'hora' => 'required|date_format:H:i|unique:horarios,hora',
+        ];
+
+        $feedback = [
+            'required' => 'O campo :attribute deve ser preenchido',
+            'hora.date_format' => 'O campo hora deve estar no formato HH:mm',
+            'hora.unique' => 'Esta hora já foi registrada.',
+        ];
+        $request->validate($regras, $feedback);
+
+
+        $data = Horario::create($request->all());
+        return response()->json([
+            "success" => true,
+            "data" => $data,
+            "msg" => "sucesso"
+        ], 200);
     }
+
 
     /**
      * Display the specified resource.
@@ -56,9 +77,26 @@ class HorarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateHorarioRequest $request, Horario $horario)
+    public function update(Request $request, Horario $horario)
     {
+
+        $regras = [
+            'hora' => 'required|date_format:H:i',
+        ];
+
+        $feedback = [
+            'required' => 'O campo :attribute deve ser preenchido',
+            'hora.date_format' => 'O campo hora deve estar no formato HH:mm',
+            'hora.unique' => 'Esta hora já foi registrada.',
+        ];
+        $request->validate($regras, $feedback);
+
         $horario->update($request->all());
+        return response()->json([
+            "success" => true,
+            "data" => $horario,
+            "msg" => "sucesso"
+        ], 200);
     }
 
     /**
