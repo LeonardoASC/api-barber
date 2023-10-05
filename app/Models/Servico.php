@@ -10,4 +10,9 @@ class Servico extends Model
     use HasFactory;
     protected $table = 'servicos';
     protected $fillable = ['name'];
+
+    public function subservico()
+    {
+        return $this->hasMany(SubServico::class);
+    }
 }
