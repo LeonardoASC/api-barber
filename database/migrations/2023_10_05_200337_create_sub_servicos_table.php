@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sub_servicos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('name');
             $table->decimal('preco', 8, 2);
             $table->time('tempo_de_duracao');
             $table->string('imagem')->nullable();

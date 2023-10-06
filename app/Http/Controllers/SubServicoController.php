@@ -37,7 +37,7 @@ class SubServicoController extends Controller
     public function store(Request $request)
     {
         $regras = [
-            'nome' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'preco' => 'required|numeric|min:0',
             'tempo_de_duracao' => 'required|numeric|min:0',
             'servico_id' => 'required|integer|exists:servicos,id',
@@ -45,8 +45,8 @@ class SubServicoController extends Controller
 
         $feedback = [
             'required' => 'O campo :attribute deve ser preenchido',
-            'nome.string' => 'O campo nome deve ser uma string',
-            'nome.max' => 'O campo nome não deve exceder 255 caracteres',
+            'name.string' => 'O campo nome deve ser uma string',
+            'name.max' => 'O campo nome não deve exceder 255 caracteres',
             'preco.numeric' => 'O campo preço deve ser numérico',
             'preco.min' => 'O preço não deve ser menor que 0',
             'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
@@ -85,10 +85,10 @@ class SubServicoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SubServico $subServico)
+    public function update(Request $request, SubServico $subservico)
     {
         $regras = [
-            'nome' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'preco' => 'required|numeric|min:0',
             'tempo_de_duracao' => 'required|numeric|min:0',
             'servico_id' => 'required|integer|exists:servicos,id',
@@ -96,8 +96,8 @@ class SubServicoController extends Controller
 
         $feedback = [
             'required' => 'O campo :attribute deve ser preenchido',
-            'nome.string' => 'O campo nome deve ser uma string',
-            'nome.max' => 'O campo nome não deve exceder 255 caracteres',
+            'name.string' => 'O campo nome deve ser uma string',
+            'name.max' => 'O campo nome não deve exceder 255 caracteres',
             'preco.numeric' => 'O campo preço deve ser numérico',
             'preco.min' => 'O preço não deve ser menor que 0',
             'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
@@ -107,10 +107,10 @@ class SubServicoController extends Controller
         ];
         $request->validate($regras, $feedback);
 
-        $subServico->update($request->all());
+        $subservico->update($request->all());
         return response()->json([
             "success" => true,
-            "data" => $subServico,
+            "data" => $subservico,
             "msg" => "sucesso"
         ], 200);
     }
@@ -118,11 +118,11 @@ class SubServicoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SubServico $subServico)
+    public function destroy(SubServico $subservico)
     {
         try {
             // Tentativa de deletar o servico
-            $subServico->delete();
+            $subservico->delete();
 
             return response()->json(['message' => 'subServico deleted successfully'], Response::HTTP_OK);
 

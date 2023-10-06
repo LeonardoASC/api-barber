@@ -9,7 +9,7 @@ class SubServico extends Model
 {
     use HasFactory;
     protected $table = 'sub_servicos';
-    protected $fillable = ['nome', 'preco', 'tempo_de_duracao', 'imagem', 'servico_id'];
+    protected $fillable = ['name', 'preco', 'tempo_de_duracao', 'imagem', 'servico_id'];
 
     public function servico()
     {
