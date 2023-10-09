@@ -51,7 +51,7 @@ class SubServicoFactory extends Factory
             'name' => $imageNameWithoutExtension,
             'preco' => $this->faker->randomFloat(2, 10, 50),
             'tempo_de_duracao' => $tempo_de_duracao,
-            'imagem' => asset('images/' . $this->faker->randomElement($imageFiles)),
+            'imagem' => asset('/storage/images/' . $this->faker->randomElement($imageFiles)),
             'servico_id' => $this->faker->numberBetween(1, 5),
         ];
     }

@@ -20,7 +20,7 @@ class SubServicoController extends Controller
      */
     public function index()
     {
-        return SubServico::all();
+        return SubServico::with('servico')->get();
     }
 
     /**
@@ -41,6 +41,7 @@ class SubServicoController extends Controller
             'preco' => 'required|numeric|min:0',
             'tempo_de_duracao' => 'required|min:0',
             'servico_id' => 'required|integer|exists:servicos,id',
+            // 'imagem' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
 
         $feedback = [
@@ -49,22 +50,33 @@ class SubServicoController extends Controller
             'name.max' => 'O campo nome não deve exceder 255 caracteres',
             'preco.numeric' => 'O campo preço deve ser numérico',
             'preco.min' => 'O preço não deve ser menor que 0',
-            // 'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
             'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
             'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
             'servico_id.exists' => 'A servico com este ID não existe',
+            // 'imagem.required' => 'A imagem é obrigatória.',
+            // 'imagem.image' => 'O arquivo deve ser uma imagem.',
+            // 'imagem.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg ou gif.',
+            // 'imagem.max' => 'A imagem não deve ter mais de 2MB.',
         ];
 
         $request->validate($regras, $feedback);
 
-        $data = SubServico::create($request->all());
+        $inputData = $request->all();
+
+        if ($request->hasFile('imagem')) {
+            $path = $request->file('imagem')->store('images', 'public');  // Armazena na pasta 'storage/app/public/images'
+            $inputData['imagem'] = '/storage/' . $path;  // O caminho será 'public/storage/images/nome_da_imagem.ext'
+        }
+
+        $data = SubServico::create($inputData);
+
         return response()->json([
             "success" => true,
             "data" => $data,
             "msg" => "sucesso"
         ], 200);
-
     }
+
 
     /**
      * Display the specified resource.
