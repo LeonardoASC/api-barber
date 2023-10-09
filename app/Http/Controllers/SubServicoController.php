@@ -39,7 +39,7 @@ class SubServicoController extends Controller
         $regras = [
             'name' => 'required|string|max:255',
             'preco' => 'required|numeric|min:0',
-            'tempo_de_duracao' => 'required|numeric|min:0',
+            'tempo_de_duracao' => 'required|min:0',
             'servico_id' => 'required|integer|exists:servicos,id',
         ];
 
@@ -49,7 +49,7 @@ class SubServicoController extends Controller
             'name.max' => 'O campo nome não deve exceder 255 caracteres',
             'preco.numeric' => 'O campo preço deve ser numérico',
             'preco.min' => 'O preço não deve ser menor que 0',
-            'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
+            // 'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
             'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
             'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
             'servico_id.exists' => 'A servico com este ID não existe',
@@ -90,7 +90,7 @@ class SubServicoController extends Controller
         $regras = [
             'name' => 'required|string|max:255',
             'preco' => 'required|numeric|min:0',
-            'tempo_de_duracao' => 'required|numeric|min:0',
+            'tempo_de_duracao' => 'required|min:0',
             'servico_id' => 'required|integer|exists:servicos,id',
         ];
 
@@ -100,7 +100,7 @@ class SubServicoController extends Controller
             'name.max' => 'O campo nome não deve exceder 255 caracteres',
             'preco.numeric' => 'O campo preço deve ser numérico',
             'preco.min' => 'O preço não deve ser menor que 0',
-            'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
+            // 'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
             'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
             'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
             'servico_id.exists' => 'A servico com este ID não existe',

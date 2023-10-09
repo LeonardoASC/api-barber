@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Servico;
 
 class ServicoSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class ServicoSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Servico::factory(5)->create();
     }
 }

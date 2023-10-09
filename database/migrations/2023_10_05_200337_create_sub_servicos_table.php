@@ -17,7 +17,6 @@ return new class extends Migration
             $table->decimal('preco', 8, 2);
             $table->time('tempo_de_duracao');
             $table->string('imagem')->nullable();
-
             $table->unsignedBigInteger('servico_id');
             $table->foreign('servico_id')->references('id')->on('servicos')->onDelete('cascade');
 

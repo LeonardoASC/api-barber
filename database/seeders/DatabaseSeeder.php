@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+// use Database\Seeders\CategoriaSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(AdminUserSeeder::class);
         $this->call(HorarioSeeder::class);
+        $this->call(ServicoSeeder::class);
+        $this->call(SubServicoSeeder::class);
     }
 }

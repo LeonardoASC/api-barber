@@ -18,6 +18,7 @@ return new class extends Migration
             $table->time('horario');
             $table->string('tipo_servico');
             $table->string('servico_especifico');
+            $table->string('status')->default('Agendado');
 
             $table->unique(['dia', 'horario']);
 
