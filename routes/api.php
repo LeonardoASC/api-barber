@@ -24,6 +24,7 @@ Route::apiResource('servico', App\Http\Controllers\ServicoController::class);
 Route::apiResource('subservico', App\Http\Controllers\SubServicoController::class);
 
 Route::get('/verify', [App\Http\Controllers\AgendamentoController::class, 'verificarAgendamento'])->name('agendamento.verificarAgendamento');
+Route::get('/verify-hour/{selectedDate}', [App\Http\Controllers\AgendamentoController::class, 'verifyHour'])->name('agendamento.verificarhora');
 
 
 Route::post('register', [App\Http\Controllers\AuthController::class, 'register']);

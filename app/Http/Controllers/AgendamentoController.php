@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agendamento;
+use App\Models\Horario;
 use App\Http\Requests\StoreAgendamentoRequest;
 use App\Http\Requests\UpdateAgendamentoRequest;
 use Illuminate\Http\Request;
@@ -83,5 +84,19 @@ class AgendamentoController extends Controller
             ->exists();
 
         return response()->json(['exists' => $exists]);
+    }
+
+    public function verifyHour(Request $request, $selectedDate) {
+        // Defina os horários disponíveis durante o dia.
+        $availableHours = Horario::pluck('hora')->toArray();
+
+        // Obtenha os horários já reservados no banco de dados para o dia selecionado.
+        $reservedHours = Agendamento::where('dia', $selectedDate)->pluck('horario')->toArray();
+
+        // Filtrar os horários disponíveis que não estão reservados.
+        $unreservedHours = array_diff($availableHours, $reservedHours);
+
+        // Retorne os horários não reservados.
+        return response()->json(['unreservedHours' => $unreservedHours]);
     }
 }
