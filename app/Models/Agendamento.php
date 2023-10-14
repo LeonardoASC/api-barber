@@ -15,5 +15,6 @@ class Agendamento extends Model
         'horario',
         'tipo_servico',
         'servico_especifico',
+        'user_id',
     ];
 }
