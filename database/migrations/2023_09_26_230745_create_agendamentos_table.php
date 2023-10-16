@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->date('dia');
             $table->time('horario');
+            $table->decimal('preco', 8, 2);
             $table->string('tipo_servico');
             $table->string('servico_especifico');
             $table->string('status')->default('Agendado');

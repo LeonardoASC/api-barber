@@ -19,6 +19,16 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::apiResource('agendamento', App\Http\Controllers\AgendamentoController::class);
+    Route::get('/total', [App\Http\Controllers\AgendamentoController::class, 'totalAgendamentos'])->name('totalAgendamentos');
+    Route::get('/receita-total', [App\Http\Controllers\AgendamentoController::class, 'receitaTotal'])->name('receitaTotal');
+    Route::get('/ultimo-cliente', [App\Http\Controllers\AgendamentoController::class, 'ultimoClienteQueMarcou'])->name('ultimoClienteQueMarcou');
+    Route::get('/receita-mensal', [App\Http\Controllers\AgendamentoController::class, 'receitaMensal'])->name('receitaMensal');
+    Route::get('/receita-semanal', [App\Http\Controllers\AgendamentoController::class, 'receitaSemanal'])->name('receitaSemanal');
+    Route::get('/receita-diaria', [App\Http\Controllers\AgendamentoController::class, 'receitaDiaria'])->name('receitaDiaria');
+    Route::get('/servico-mais-selecionado', [App\Http\Controllers\AgendamentoController::class, 'tipoServicoMaisSelecionado'])->name('tipoServicoMaisSelecionado');
+
+
+
 Route::apiResource('horario', App\Http\Controllers\HorarioController::class);
 Route::apiResource('servico', App\Http\Controllers\ServicoController::class);
 Route::apiResource('subservico', App\Http\Controllers\SubServicoController::class);

@@ -13,6 +13,7 @@ class Agendamento extends Model
         'nome',
         'dia',
         'horario',
+        'preco',
         'tipo_servico',
         'servico_especifico',
         'user_id',

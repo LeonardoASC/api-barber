@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 
 use App\Models\Agendamento;
 use App\Models\Horario;
@@ -99,4 +100,58 @@ class AgendamentoController extends Controller
         // Retorne os horários não reservados.
         return response()->json(['unreservedHours' => $unreservedHours]);
     }
+
+    public function totalAgendamentos()
+    {
+        return response()->json(['total' => Agendamento::count()]);
+    }
+
+    public function receitaTotal()
+    {
+        return response()->json(['receita_total' => Agendamento::sum('preco')]);
+    }
+
+    public function ultimoClienteQueMarcou()
+    {
+        $agendamento = Agendamento::orderBy('created_at', 'desc')->first();
+        return response()->json($agendamento);
+    }
+
+    public function receitaMensal()
+    {
+        $month = Carbon::now()->month;
+        $year = Carbon::now()->year;
+        $receita = Agendamento::whereMonth('dia', $month)
+                    ->whereYear('dia', $year)
+                    ->sum('preco');
+        return response()->json(['receita_mensal' => $receita]);
+    }
+
+    public function receitaSemanal()
+    {
+        $inicioSemana = Carbon::now()->startOfWeek();
+        $fimSemana = Carbon::now()->endOfWeek();
+
+        $receita = Agendamento::whereBetween('dia', [$inicioSemana, $fimSemana])
+                    ->sum('preco');
+
+        return response()->json(['receita_semanal' => $receita]);
+    }
+
+    public function receitaDiaria()
+    {
+        $today = Carbon::today();
+        $receita = Agendamento::whereDate('dia', $today)->sum('preco');
+        return response()->json(['receita_diaria' => $receita]);
+    }
+
+    public function tipoServicoMaisSelecionado()
+    {
+        $tipo = Agendamento::select('tipo_servico')
+                ->groupBy('tipo_servico')
+                ->orderByRaw('COUNT(*) DESC')
+                ->first();
+        return response()->json($tipo);
+    }
+
 }

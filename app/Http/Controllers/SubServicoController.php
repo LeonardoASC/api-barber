@@ -65,7 +65,8 @@ class SubServicoController extends Controller
 
         if ($request->hasFile('imagem')) {
             $path = $request->file('imagem')->store('images', 'public');  // Armazena na pasta 'storage/app/public/images'
-            $inputData['imagem'] = '/storage/' . $path;  // O caminho será 'public/storage/images/nome_da_imagem.ext'
+            $baseURL = env('APP_URL'); // Obtém a URL base do .env
+            $inputData['imagem'] = $baseURL . '/storage/' . $path;  // Concatena a URL base ao caminho da imagem
         }
 
         $data = SubServico::create($inputData);
