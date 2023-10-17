@@ -156,4 +156,33 @@ class AgendamentoController extends Controller
         return response()->json($tipo);
     }
 
+    public function getAgendamentosDia()
+    {
+        $hoje = Carbon::today();
+        $quantidade = Agendamento::whereDate('dia', $hoje)->count();
+
+        return response()->json(['quantidade_agendamentos_dia' => $quantidade]);
+    }
+
+    public function getAgendamentosSemana()
+    {
+        $inicioSemana = Carbon::now()->startOfWeek();
+        $fimSemana = Carbon::now()->endOfWeek();
+        $quantidade = Agendamento::whereBetween('dia', [$inicioSemana, $fimSemana])->count();
+
+        return response()->json(['quantidade_agendamentos_semana' => $quantidade]);
+    }
+
+    public function getAgendamentosMes()
+    {
+        $inicioMes = Carbon::now()->startOfMonth();
+        $fimMes = Carbon::now()->endOfMonth();
+        $quantidade = Agendamento::whereBetween('dia', [$inicioMes, $fimMes])->count();
+
+        return response()->json(['quantidade_agendamentos_mes' => $quantidade]);
+    }
+
+
+
+
 }

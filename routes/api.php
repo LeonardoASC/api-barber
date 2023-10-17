@@ -27,7 +27,9 @@ Route::apiResource('agendamento', App\Http\Controllers\AgendamentoController::cl
     Route::get('/receita-diaria', [App\Http\Controllers\AgendamentoController::class, 'receitaDiaria'])->name('receitaDiaria');
     Route::get('/servico-mais-selecionado', [App\Http\Controllers\AgendamentoController::class, 'tipoServicoMaisSelecionado'])->name('tipoServicoMaisSelecionado');
 
-
+    Route::get('/agendamentos-dia', [App\Http\Controllers\AgendamentoController::class, 'getAgendamentosDia'])->name('agendamentosDia');
+    Route::get('/agendamentos-semana', [App\Http\Controllers\AgendamentoController::class, 'getAgendamentosSemana'])->name('agendamentosSemana');
+    Route::get('/agendamentos-mes', [App\Http\Controllers\AgendamentoController::class, 'getAgendamentosMes'])->name('agendamentosMes');
 
 Route::apiResource('horario', App\Http\Controllers\HorarioController::class);
 Route::apiResource('servico', App\Http\Controllers\ServicoController::class);
