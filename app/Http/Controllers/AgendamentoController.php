@@ -64,6 +64,8 @@ class AgendamentoController extends Controller
     {
         $agendamento = Agendamento::findOrFail($id);
         $agendamento->update($request->all());
+
+        return response()->json(['message' => 'Agendamento atualizado com sucesso!'], 200);
     }
 
     /**

@@ -16,6 +16,7 @@ class Agendamento extends Model
         'preco',
         'tipo_servico',
         'servico_especifico',
+        'status',
         'user_id',
     ];
 }
