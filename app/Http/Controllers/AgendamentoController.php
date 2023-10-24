@@ -110,7 +110,8 @@ class AgendamentoController extends Controller
 
     public function receitaTotal()
     {
-        return response()->json(['receita_total' => Agendamento::sum('preco')]);
+        $receita = Agendamento::where('status', 'Concluido')->sum('preco');
+        return response()->json(['receita_total' => $receita]);
     }
 
     public function ultimoClienteQueMarcou()
@@ -123,9 +124,12 @@ class AgendamentoController extends Controller
     {
         $month = Carbon::now()->month;
         $year = Carbon::now()->year;
-        $receita = Agendamento::whereMonth('dia', $month)
+
+        $receita = Agendamento::where('status', 'Concluido')
+                    ->whereMonth('dia', $month)
                     ->whereYear('dia', $year)
                     ->sum('preco');
+
         return response()->json(['receita_mensal' => $receita]);
     }
 
@@ -134,7 +138,8 @@ class AgendamentoController extends Controller
         $inicioSemana = Carbon::now()->startOfWeek();
         $fimSemana = Carbon::now()->endOfWeek();
 
-        $receita = Agendamento::whereBetween('dia', [$inicioSemana, $fimSemana])
+        $receita = Agendamento::where('status', 'Concluido')
+                    ->whereBetween('dia', [$inicioSemana, $fimSemana])
                     ->sum('preco');
 
         return response()->json(['receita_semanal' => $receita]);
@@ -143,7 +148,11 @@ class AgendamentoController extends Controller
     public function receitaDiaria()
     {
         $today = Carbon::today();
-        $receita = Agendamento::whereDate('dia', $today)->sum('preco');
+
+        $receita = Agendamento::where('status', 'Concluido')
+                    ->whereDate('dia', $today)
+                    ->sum('preco');
+
         return response()->json(['receita_diaria' => $receita]);
     }
 
@@ -183,6 +192,14 @@ class AgendamentoController extends Controller
     }
 
 
+    public function meusAgendamentos($user_id){
 
+        $agendamentos = Agendamento::where('user_id', $user_id)
+                                   ->orderBy('dia', 'desc')
+                                   ->orderBy('horario', 'desc')
+                                   ->get();
+
+        return response()->json($agendamentos);
+    }
 
 }
