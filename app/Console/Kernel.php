@@ -4,6 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,8 +16,37 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $this->sendNotifications();
+        })->everyMinute();
     }
 
+    protected function sendNotifications()
+    {
+        // Pega os agendamentos que estão a 30 minutos de acontecer
+        $start = now();
+        $end = now()->addMinutes(30);
+
+        $appointments = DB::table('agendamentos')
+            ->whereBetween('horario', [$start, $end])
+            ->where('status', 'Agendado')
+            ->get();
+
+        foreach ($appointments as $appointment) {
+            $user = User::find($appointment->user_id);
+            if ($user && $user->expo_token) {
+                $this->sendExpoNotification($user->expo_token, "Seu agendamento é em 30 minutos!");
+            }
+        }
+    }
+
+    protected function sendExpoNotification($token, $message)
+    {
+        $expo = \ExponentPhpSDK\Expo::normalSetup();
+
+        $notification = ['body' => $message];
+        $expo->notify([$token], $notification);
+    }
     /**
      * Register the commands for the application.
      */
