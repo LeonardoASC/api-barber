@@ -17,6 +17,11 @@ class NotificationController extends Controller
         ]);
 
         $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated.'], 401); // código 401 é "Não autorizado"
+        }
+
         $user->expo_token = $request->expo_token;
         $user->save();
 
@@ -26,6 +31,11 @@ class NotificationController extends Controller
     public function removeExpoToken(Request $request)
     {
         $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated.'], 401); // código 401 é "Não autorizado"
+        }
+        
         $user->expo_token = null;
         $user->save();
 

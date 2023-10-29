@@ -47,6 +47,8 @@ Route::get('logout', [App\Http\Controllers\AuthController::class, 'logout']);
 Route::get('user', [App\Http\Controllers\AuthController::class, 'getAuthUser']);
 
 Route::post('/update-expo-token', [App\Http\Controllers\NotificationController::class, 'updateExpoToken'])->name('updateExpoToken');
+Route::post('/remove-expo-token', [App\Http\Controllers\NotificationController::class, 'removeExpoToken'])->name('removeExpoToken');
+
 Route::post('/test-notifications', [App\Http\Controllers\NotificationController::class, 'sendNotifications'])->name('sendNotifications');
 
 
