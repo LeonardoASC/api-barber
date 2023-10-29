@@ -49,6 +49,9 @@ Route::get('user', [App\Http\Controllers\AuthController::class, 'getAuthUser']);
 Route::post('/update-expo-token', [App\Http\Controllers\NotificationController::class, 'updateExpoToken'])->name('updateExpoToken');
 Route::post('/remove-expo-token', [App\Http\Controllers\NotificationController::class, 'removeExpoToken'])->name('removeExpoToken');
 
-Route::post('/test-notifications', [App\Http\Controllers\NotificationController::class, 'sendNotifications'])->name('sendNotifications');
+// Route::post('/test-notifications', [App\Http\Controllers\NotificationController::class, 'sendNotifications'])->name('NotificationController.sendNotifications');
+
+Route::get('/send-notification', [App\Http\Controllers\SendNotificationController::class, 'sendNotification'])->name('SendNotificationController.sendNotifications');
 
 
+Route::get('/send-test-notification', [App\Http\Controllers\SendNotificationController::class, 'sendTestNotification']);

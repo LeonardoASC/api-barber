@@ -18,5 +18,6 @@ class Agendamento extends Model
         'servico_especifico',
         'status',
         'user_id',
+        'notification_sent',
     ];
 }

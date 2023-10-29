@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('tipo_servico');
             $table->string('servico_especifico');
             $table->string('status')->default('Agendado');
-
+            $table->boolean('notification_sent')->default(false);
             $table->unique(['dia', 'horario']);
 
             $table->unsignedBigInteger('user_id')->nullable();

@@ -13,6 +13,16 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
+    // {
+    //     "registration_ids": ["er_iozWLQG6c--mEcupImg:APA91bEI5-vBxnMSFf9uCoE-gzqWvaghQ3qus3DF3jPbf6gpV4wPvDxHau5GRUPrM8d2WfOLtmJP8B4wACOZgmYVg-4g6CZATWRgT7mW-Avr3Wx77hqXeO-SMcbk6MJrvkZ4W0kFqdYy"],
+    //     "notification": {
+    //       "body": "Send me new body",
+    //       "title": "Hello, this is new",
+    //       "name": "hello",
+    //       "da": "this is console data",
+    //       "clickUrl": "https://google.com"
+    //     }
+    //   }
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
@@ -30,12 +40,15 @@ class Kernel extends ConsoleKernel
         $appointments = DB::table('agendamentos')
             ->whereBetween('horario', [$start, $end])
             ->where('status', 'Agendado')
+            ->where('notification_sent', false)
             ->get();
 
         foreach ($appointments as $appointment) {
             $user = User::find($appointment->user_id);
             if ($user && $user->expo_token) {
                 $this->sendExpoNotification($user->expo_token, "Seu agendamento é em 30 minutos!");
+                // Marca que a notificação foi enviada para este agendamento
+                DB::table('agendamentos')->where('id', $appointment->id)->update(['notification_sent' => true]);
             }
         }
     }
