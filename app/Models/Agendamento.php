@@ -20,4 +20,8 @@ class Agendamento extends Model
         'user_id',
         'notification_sent',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
