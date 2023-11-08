@@ -52,6 +52,7 @@ Route::post('/remove-expo-token', [App\Http\Controllers\NotificationController::
 // Route::post('/test-notifications', [App\Http\Controllers\NotificationController::class, 'sendNotifications'])->name('NotificationController.sendNotifications');
 
 Route::get('/send-notification', [App\Http\Controllers\SendNotificationController::class, 'sendNotification'])->name('SendNotificationController.sendNotifications');
-
-
 Route::get('/send-test-notification', [App\Http\Controllers\SendNotificationController::class, 'sendTestNotification']);
+
+Route::apiResource('plano', App\Http\Controllers\PlanoController::class);
+
