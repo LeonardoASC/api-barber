@@ -102,21 +102,16 @@ class HorarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(Horario $horario)
     {
         try {
-            // Tentativa de deletar o horário
             $horario->delete();
-
-            return response()->json(['message' => 'Horario deleted successfully'], Response::HTTP_OK);
-
+            return response()->json(['message' => 'Horario deleted successfully'], 200);
         } catch (QueryException $e) {
-            // Caso haja algum erro na operação do banco de dados
-            return response()->json(['message' => 'Failed to delete the Horario'], Response::HTTP_INTERNAL_SERVER_ERROR);
-
+            return response()->json(['message' => 'Failed to delete the Horario'], 500);
         } catch (\Exception $e) {
-            // Caso haja algum outro erro não esperado
-            return response()->json(['message' => 'Server error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => 'Server error'], 500);
         }
     }
 }
