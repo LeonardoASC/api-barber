@@ -42,18 +42,17 @@ class SubServicoFactory extends Factory
             'Top_Knot.png'
         ];
 
-        $hours = str_pad($this->faker->numberBetween(0, 3), 2, '0', STR_PAD_LEFT); // Horas entre 00 e 03.
-        $minutes = str_pad($this->faker->numberBetween(0, 59), 2, '0', STR_PAD_LEFT); // Minutos entre 00 e 59.
+        $hours = str_pad($this->faker->numberBetween(0, 3), 2, '0', STR_PAD_LEFT); // Horas entre 00 e 03
+        $minutes = str_pad($this->faker->numberBetween(0, 59), 2, '0', STR_PAD_LEFT); // Minutos entre 00 e 59
         $tempo_de_duracao = "$hours:$minutes";
 
-        $imageNameWithoutExtension = basename($this->faker->randomElement($imageFiles), '.png');
+        $selectedImage = $this->faker->randomElement($imageFiles);
         return [
-            'name' => $imageNameWithoutExtension,
+            'name' => basename($selectedImage, '.png'), // Remove .png from the name
             'preco' => $this->faker->randomFloat(2, 10, 50),
             'tempo_de_duracao' => $tempo_de_duracao,
-            'imagem' => asset('/storage/images/' . $this->faker->randomElement($imageFiles)),
+            'imagem' => "images/$selectedImage", // Directly store the relative path
             'servico_id' => $this->faker->numberBetween(1, 5),
         ];
-
     }
 }

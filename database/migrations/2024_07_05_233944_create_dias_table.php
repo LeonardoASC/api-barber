@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('dias', function (Blueprint $table) {
             $table->id();
-            $table->string('id_dia');
+            $table->string('codigo_dia');
             $table->string('dia');
             $table->string('status')->default('ativo');
             $table->timestamps();

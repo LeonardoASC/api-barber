@@ -9,5 +9,5 @@ class Dia extends Model
 {
     use HasFactory;
     protected $table = 'dias';
-    protected $fillable = ['id_dia', 'dia', 'status'];
+    protected $fillable = ['codigo_dia', 'dia', 'status'];
 }

@@ -7,6 +7,7 @@ use App\Models\Servico;
 use App\Http\Requests\StoreSubServicoRequest;
 use App\Http\Requests\UpdateSubServicoRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -34,50 +35,85 @@ class SubServicoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     $regras = [
+    //         'name' => 'required|string|max:255',
+    //         'preco' => 'required|numeric|min:0',
+    //         'tempo_de_duracao' => 'required|min:0',
+    //         'servico_id' => 'required|integer|exists:servicos,id',
+    //         // 'imagem' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    //     ];
+
+    //     $feedback = [
+    //         'required' => 'O campo :attribute deve ser preenchido',
+    //         'name.string' => 'O campo nome deve ser uma string',
+    //         'name.max' => 'O campo nome não deve exceder 255 caracteres',
+    //         'preco.numeric' => 'O campo preço deve ser numérico',
+    //         'preco.min' => 'O preço não deve ser menor que 0',
+    //         'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
+    //         'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
+    //         'servico_id.exists' => 'A servico com este ID não existe',
+    //         // 'imagem.required' => 'A imagem é obrigatória.',
+    //         // 'imagem.image' => 'O arquivo deve ser uma imagem.',
+    //         // 'imagem.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg ou gif.',
+    //         // 'imagem.max' => 'A imagem não deve ter mais de 2MB.',
+    //     ];
+
+    //     $request->validate($regras, $feedback);
+
+    //     $inputData = $request->all();
+
+    //     if ($request->hasFile('imagem')) {
+    //         $path = $request->file('imagem')->store('images', 'public');  // Armazena na pasta 'storage/app/public/images'
+    //         $baseURL = env('APP_URL'); // Obtém a URL base do .env
+    //         $inputData['imagem'] = $baseURL . '/storage/' . $path;  // Concatena a URL base ao caminho da imagem
+    //     }
+
+    //     $data = SubServico::create($inputData);
+
+    //     return response()->json([
+    //         "success" => true,
+    //         "data" => $data,
+    //         "msg" => "sucesso"
+    //     ], 200);
+    // }
+
     public function store(Request $request)
     {
-        $regras = [
+        // Validação dos dados
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'preco' => 'required|numeric|min:0',
-            'tempo_de_duracao' => 'required|min:0',
-            'servico_id' => 'required|integer|exists:servicos,id',
-            // 'imagem' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ];
+            'tempo_de_duracao' => 'required',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'servico_id' => 'required|exists:servicos,id',
+        ]);
 
-        $feedback = [
-            'required' => 'O campo :attribute deve ser preenchido',
-            'name.string' => 'O campo nome deve ser uma string',
-            'name.max' => 'O campo nome não deve exceder 255 caracteres',
-            'preco.numeric' => 'O campo preço deve ser numérico',
-            'preco.min' => 'O preço não deve ser menor que 0',
-            'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
-            'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
-            'servico_id.exists' => 'A servico com este ID não existe',
-            // 'imagem.required' => 'A imagem é obrigatória.',
-            // 'imagem.image' => 'O arquivo deve ser uma imagem.',
-            // 'imagem.mimes' => 'A imagem deve ser do tipo: jpeg, png, jpg ou gif.',
-            // 'imagem.max' => 'A imagem não deve ter mais de 2MB.',
-        ];
-
-        $request->validate($regras, $feedback);
-
-        $inputData = $request->all();
-
-        if ($request->hasFile('imagem')) {
-            $path = $request->file('imagem')->store('images', 'public');  // Armazena na pasta 'storage/app/public/images'
-            $baseURL = env('APP_URL'); // Obtém a URL base do .env
-            $inputData['imagem'] = $baseURL . '/storage/' . $path;  // Concatena a URL base ao caminho da imagem
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
 
-        $data = SubServico::create($inputData);
+        // Processa o upload da imagem
+        $imagemPath = null;
+        if ($request->hasFile('imagem')) {
+            $imagemPath = $request->file('imagem')->store('images', 'public');
+        }
 
-        return response()->json([
-            "success" => true,
-            "data" => $data,
-            "msg" => "sucesso"
-        ], 200);
+        // Criação do novo SubServico
+        $subServico = new SubServico([
+            'name' => $request->name,
+            'preco' => $request->preco,
+            'tempo_de_duracao' => $request->tempo_de_duracao,
+            'imagem' => $imagemPath, // Salva o caminho da imagem
+            'servico_id' => $request->servico_id,
+        ]);
+
+        $subServico->save();
+
+        // Retorna uma resposta JSON
+        return response()->json(['message' => 'Sub-serviço criado com sucesso!', 'data' => $subServico], 201);
     }
-
 
     /**
      * Display the specified resource.

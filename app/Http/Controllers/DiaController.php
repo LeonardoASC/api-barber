@@ -61,7 +61,7 @@ class DiaController extends Controller
     {
         // Validação dos dados recebidos
         $request->validate([
-            'id_dia' => 'nullable|string|max:255',
+            'codigo_dia' => 'nullable|string|max:255',
             'dia' => 'nullable|string|max:255',
             'status' => 'required|string|in:ativo,inativo'
         ]);
@@ -75,7 +75,7 @@ class DiaController extends Controller
         }
 
         // Atualiza os dados do dia
-        $dia->id_dia = $request->input('id_dia');
+        $dia->codigo_dia = $request->input('codigo_dia');
         $dia->dia = $request->input('dia');
         $dia->status = $request->input('status');
         $dia->save();

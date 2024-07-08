@@ -22,7 +22,7 @@ class UpdateDiaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_dia' => 'required|string|max:255',
+            'codigo_dia' => 'required|string|max:255',
             'dia' => 'required|string|max:255',
             'status' => 'required|string|in:ativo,inativo'
         ];

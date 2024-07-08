@@ -14,13 +14,13 @@ class DiaSeeder extends Seeder
     public function run(): void
     {
         $dias = [
-            ['id_dia' => '1', 'dia' => 'Domingo', 'status' => 'inativo'],
-            ['id_dia' => '2', 'dia' => 'Segunda-feira', 'status' => 'inativo'],
-            ['id_dia' => '3', 'dia' => 'Terça-feira', 'status' => 'ativo'],
-            ['id_dia' => '4', 'dia' => 'Quarta-feira', 'status' => 'ativo'],
-            ['id_dia' => '5', 'dia' => 'Quinta-feira', 'status' => 'ativo'],
-            ['id_dia' => '6', 'dia' => 'Sexta-feira', 'status' => 'ativo'],
-            ['id_dia' => '7', 'dia' => 'Sábado', 'status' => 'ativo'],
+            ['codigo_dia' => '1', 'dia' => 'Domingo', 'status' => 'inativo'],
+            ['codigo_dia' => '2', 'dia' => 'Segunda-feira', 'status' => 'inativo'],
+            ['codigo_dia' => '3', 'dia' => 'Terça-feira', 'status' => 'ativo'],
+            ['codigo_dia' => '4', 'dia' => 'Quarta-feira', 'status' => 'ativo'],
+            ['codigo_dia' => '5', 'dia' => 'Quinta-feira', 'status' => 'ativo'],
+            ['codigo_dia' => '6', 'dia' => 'Sexta-feira', 'status' => 'ativo'],
+            ['codigo_dia' => '7', 'dia' => 'Sábado', 'status' => 'ativo'],
         ];
 
         foreach ($dias as $dia) {
