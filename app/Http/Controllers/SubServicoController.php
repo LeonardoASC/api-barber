@@ -184,35 +184,54 @@ class SubServicoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SubServico $subservico)
-    {
-        $regras = [
-            'name' => 'required|string|max:255',
-            'preco' => 'required|numeric|min:0',
-            'tempo_de_duracao' => 'required|min:0',
-            'servico_id' => 'required|integer|exists:servicos,id',
-        ];
+   public function update(Request $request, $id)
+{
+    $regras = [
+        'name' => 'required|string|max:255',
+        'preco' => 'required|numeric|min:0',
+        'tempo_de_duracao' => 'required|min:0',
+        'servico_id' => 'required|integer|exists:servicos,id',
+        'imagem' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+    ];
 
-        $feedback = [
-            'required' => 'O campo :attribute deve ser preenchido',
-            'name.string' => 'O campo nome deve ser uma string',
-            'name.max' => 'O campo nome não deve exceder 255 caracteres',
-            'preco.numeric' => 'O campo preço deve ser numérico',
-            'preco.min' => 'O preço não deve ser menor que 0',
-            // 'tempo_de_duracao.numeric' => 'O campo tempo de duração deve ser numérico',
-            'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
-            'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
-            'servico_id.exists' => 'A servico com este ID não existe',
-        ];
-        $request->validate($regras, $feedback);
+    $feedback = [
+        'required' => 'O campo :attribute deve ser preenchido',
+        'name.string' => 'O campo nome deve ser uma string',
+        'name.max' => 'O campo nome não deve exceder 255 caracteres',
+        'preco.numeric' => 'O campo preço deve ser numérico',
+        'preco.min' => 'O preço não deve ser menor que 0',
+        'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
+        'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
+        'servico_id.exists' => 'A servico com este ID não existe',
+        'imagem.image' => 'O arquivo deve ser uma imagem.',
+    ];
 
-        $subservico->update($request->all());
-        return response()->json([
-            "success" => true,
-            "data" => $subservico,
-            "msg" => "sucesso"
-        ], 200);
+    $request->validate($regras, $feedback);
+
+    $subServico = SubServico::findOrFail($id); // Busca o SubServico ou falha se não encontrado
+
+    // Processa a imagem e salva no sistema de arquivos, se fornecida
+    if ($request->hasFile('imagem')) {
+        $imagePath = $request->file('imagem')->store('images', 'public');
+        $subServico->imagem = $imagePath; // Atualiza o caminho da imagem apenas se uma nova foi enviada
     }
+
+    // Atualiza os outros campos
+    $subServico->name = $request->name;
+    $subServico->preco = $request->preco;
+    $subServico->tempo_de_duracao = $request->tempo_de_duracao;
+    $subServico->servico_id = $request->servico_id;
+
+    $subServico->save(); // Salva as mudanças no banco de dados
+
+    return response()->json([
+        "success" => true,
+        "data" => $subServico,
+        "msg" => "Atualização realizada com sucesso"
+    ], 200);
+}
+
+
 
     /**
      * Remove the specified resource from storage.
