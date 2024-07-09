@@ -79,41 +79,91 @@ class SubServicoController extends Controller
     //     ], 200);
     // }
 
+    // public function store(Request $request)
+    // {
+    //     // Validação dos dados
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required|string|max:255',
+    //         'preco' => 'required|numeric|min:0',
+    //         'tempo_de_duracao' => 'required',
+    //         'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //         'servico_id' => 'required|exists:servicos,id',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
+
+    //     // Processa o upload da imagem
+    //     $imagemPath = null;
+    //     if ($request->hasFile('imagem')) {
+    //         $imagemPath = $request->file('imagem')->store('images', 'public');
+    //     }
+
+    //     // Criação do novo SubServico
+    //     $subServico = new SubServico([
+    //         'name' => $request->name,
+    //         'preco' => $request->preco,
+    //         'tempo_de_duracao' => $request->tempo_de_duracao,
+    //         'imagem' => $imagemPath, // Salva o caminho da imagem
+    //         'servico_id' => $request->servico_id,
+    //     ]);
+
+    //     $subServico->save();
+    //     return response()->json([
+    //         "success" => true,
+    //          'data' => $subServico,
+    //         "msg" => "sucesso"
+    //         ], 200);
+    // }
     public function store(Request $request)
     {
-        // Validação dos dados
-        $validator = Validator::make($request->all(), [
+        $regras = [
             'name' => 'required|string|max:255',
             'preco' => 'required|numeric|min:0',
-            'tempo_de_duracao' => 'required',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'servico_id' => 'required|exists:servicos,id',
-        ]);
+            'tempo_de_duracao' => 'required|min:0',
+            'servico_id' => 'required|integer|exists:servicos,id',
+            'imagem' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ];
+        $feedback = [
+            'required' => 'O campo :attribute deve ser preenchido',
+            'name.string' => 'O campo nome deve ser uma string',
+            'name.max' => 'O campo nome não deve exceder 255 caracteres',
+            'preco.numeric' => 'O campo preço deve ser numérico',
+            'preco.min' => 'O preço não deve ser menor que 0',
+            'tempo_de_duracao.min' => 'O tempo de duração não deve ser menor que 0',
+            'servico_id.integer' => 'O campo servico id deve ser um número inteiro',
+            'servico_id.exists' => 'A servico com este ID não existe',
+            'imagem.image' => 'O arquivo deve ser uma imagem.',
+        ];
+        $request->validate($regras, $feedback);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        // Processa o upload da imagem
-        $imagemPath = null;
+        // Processa a imagem e salva no sistema de arquivos
         if ($request->hasFile('imagem')) {
-            $imagemPath = $request->file('imagem')->store('images', 'public');
+            $imagePath = $request->file('imagem')->store('images', 'public');
+        } else {
+            return response()->json([
+                "success" => false,
+                "msg" => "Falha no upload da imagem"
+            ], 400);
         }
 
-        // Criação do novo SubServico
-        $subServico = new SubServico([
+        // Cria o novo SubServico com o caminho da imagem
+        $data = SubServico::create([
             'name' => $request->name,
             'preco' => $request->preco,
             'tempo_de_duracao' => $request->tempo_de_duracao,
-            'imagem' => $imagemPath, // Salva o caminho da imagem
             'servico_id' => $request->servico_id,
+            'imagem' => $imagePath,
         ]);
 
-        $subServico->save();
-
-        // Retorna uma resposta JSON
-        return response()->json(['message' => 'Sub-serviço criado com sucesso!', 'data' => $subServico], 201);
+        return response()->json([
+            "success" => true,
+            "data" => $data,
+            "msg" => "sucesso"
+        ], 200);
     }
+
 
     /**
      * Display the specified resource.
