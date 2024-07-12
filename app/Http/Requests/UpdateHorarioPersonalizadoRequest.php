@@ -27,13 +27,13 @@ class UpdateHorarioPersonalizadoRequest extends FormRequest
             'data_inicial' => [
                 'required',
                 'date',
-                Rule::unique('horario_personalizados', 'data_inicial')->ignore($this->horarioPersonalizado),
+                // Rule::unique('horario_personalizados', 'data_inicial')->ignore($this->horarioPersonalizado),
             ],
             'data_final' => [
                 'required',
                 'date',
                 'after:data_inicial',
-                Rule::unique('horario_personalizados', 'data_final')->ignore($this->horarioPersonalizado),
+                // Rule::unique('horario_personalizados', 'data_final')->ignore($this->horarioPersonalizado),
             ],
             'hora_inicial' => 'required|date_format:H:i',
             'hora_final' => 'required|date_format:H:i|after:hora_inicial',
